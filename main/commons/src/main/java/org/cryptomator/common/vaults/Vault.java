@@ -9,7 +9,28 @@
 package org.cryptomator.common.vaults;
 
 import com.google.common.base.Strings;
+import java.io.IOException;
+import java.nio.file.NoSuchFileException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.EnumSet;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import javafx.beans.Observable;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
+import javafx.beans.binding.StringBinding;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javax.inject.Inject;
+import javax.inject.Named;
+import javax.inject.Provider;
 import org.apache.commons.lang3.SystemUtils;
+import static org.cryptomator.common.Constants.MASTERKEY_FILENAME;
 import org.cryptomator.common.mountpoint.InvalidMountPointException;
 import org.cryptomator.common.settings.VaultSettings;
 import org.cryptomator.common.vaults.Volume.VolumeException;
@@ -23,29 +44,6 @@ import org.cryptomator.cryptolib.api.CryptoException;
 import org.cryptomator.cryptolib.api.InvalidPassphraseException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import javax.inject.Inject;
-import javax.inject.Named;
-import javax.inject.Provider;
-import javafx.beans.Observable;
-import javafx.beans.binding.Bindings;
-import javafx.beans.binding.BooleanBinding;
-import javafx.beans.binding.StringBinding;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.ObjectProperty;
-import javafx.beans.property.SimpleBooleanProperty;
-import java.io.IOException;
-import java.nio.file.NoSuchFileException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.EnumSet;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
-
-import static org.cryptomator.common.Constants.MASTERKEY_FILENAME;
 
 @PerVault
 public class Vault {
@@ -75,7 +73,12 @@ public class Vault {
 	private volatile Volume volume;
 
 	@Inject
-	Vault(VaultSettings vaultSettings, Provider<Volume> volumeProvider, @DefaultMountFlags StringBinding defaultMountFlags, AtomicReference<CryptoFileSystem> cryptoFileSystem, VaultState state, @Named("lastKnownException") ObjectProperty<Exception> lastKnownException, VaultStats stats) {
+	Vault(VaultSettings vaultSettings, Provider<Volume> volumeProvider, 
+                @DefaultMountFlags StringBinding defaultMountFlags, 
+                AtomicReference<CryptoFileSystem> cryptoFileSystem, 
+                VaultState state, 
+                @Named("lastKnownException") ObjectProperty<Exception> lastKnownException, 
+                VaultStats stats) {
 		this.vaultSettings = vaultSettings;
 		this.volumeProvider = volumeProvider;
 		this.defaultMountFlags = defaultMountFlags;

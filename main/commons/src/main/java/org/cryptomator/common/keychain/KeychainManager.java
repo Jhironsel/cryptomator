@@ -3,17 +3,16 @@ package org.cryptomator.common.keychain;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.CacheLoader;
 import com.google.common.cache.LoadingCache;
-import org.cryptomator.integrations.keychain.KeychainAccessException;
-import org.cryptomator.integrations.keychain.KeychainAccessProvider;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
+import java.util.Arrays;
 import javafx.application.Platform;
 import javafx.beans.binding.ObjectExpression;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ReadOnlyBooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import java.util.Arrays;
+import javax.inject.Inject;
+import javax.inject.Singleton;
+import org.cryptomator.integrations.keychain.KeychainAccessException;
+import org.cryptomator.integrations.keychain.KeychainAccessProvider;
 
 @Singleton
 public class KeychainManager implements KeychainAccessProvider {
